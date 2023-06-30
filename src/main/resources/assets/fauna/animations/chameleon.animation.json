@@ -1,0 +1,117 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.chameleon.idle": {
+			"loop": true
+		},
+		"animation.chameleon.tongueflick": {
+			"animation_length": 0.48,
+			"bones": {
+				"tongue": {
+					"scale": [1, 0, "1*math.sin(q.anim_time*90*4)"]
+				}
+			}
+		},
+		"animation.chameleon.walk": {
+			"loop": true,
+			"bones": {
+				"body": {
+					"rotation": [0, 0, "6*-math.cos(query.anim_time*90*0.5+45)"],
+					"position": [0, "0.1*-math.cos(query.anim_time*90*1+45)", 0]
+				},
+				"right_leg": {
+					"rotation": [0, "30*math.sin(query.anim_time*90*0.5+45)", "12+12*-math.cos(query.anim_time*90*0.5+45)"]
+				},
+				"left_leg": {
+					"rotation": [0, "30*math.sin(query.anim_time*90*0.5)", "-12+12*-math.cos(query.anim_time*90*0.5)"]
+				},
+				"right_leg2": {
+					"rotation": [0, "30*-math.sin(query.anim_time*90*0.5)", "12+12*math.cos(query.anim_time*90*0.5)"]
+				},
+				"left_leg2": {
+					"rotation": [0, "30*-math.sin(query.anim_time*90*0.5)", "-12+12*math.cos(query.anim_time*90*0.5)"]
+				}
+			}
+		},
+		"walk": {
+			"loop": true,
+			"bones": {
+				"body": {
+					"rotation": [0, 0, "2*-math.sin(query.anim_time*90*4)"],
+					"position": [0, "0.1+0.1*-math.sin(query.anim_time*90*8)", 0]
+				},
+				"tail": {
+					"rotation": [0, "12*math.cos(query.anim_time*90*4)", 0]
+				},
+				"leg_right": {
+					"rotation": ["12*-math.sin(query.anim_time*90*4)", 0, "12+12*math.cos(query.anim_time*90*4)"]
+				},
+				"leg_left": {
+					"rotation": ["-12*-math.sin(query.anim_time*90*4)", 0, "-12+12*math.cos(query.anim_time*90*4)"]
+				},
+				"leg_right_front": {
+					"rotation": ["12*math.sin(query.anim_time*90*4)", 0, "12+12*-math.cos(query.anim_time*90*4)"]
+				},
+				"leg_left_front": {
+					"rotation": ["-12*math.sin(query.anim_time*90*4)", 0, "-12+12*-math.cos(query.anim_time*90*4)"]
+				}
+			}
+		},
+		"idle": {
+			"loop": true,
+			"bones": {
+				"tail": {
+					"rotation": [0, "12*math.cos(query.anim_time*90*2)", 0]
+				}
+			}
+		},
+		"sit": {
+			"loop": true,
+			"bones": {
+				"body": {
+					"rotation": [-20, 0, 0]
+				},
+				"head": {
+					"rotation": [10, 0, 0]
+				},
+				"tail": {
+					"rotation": [22.5, 0, 0]
+				}
+			}
+		},
+		"animation.chameleon.tongue": {
+			"animation_length": 0.44,
+			"bones": {
+				"mouth": {
+					"rotation": {
+						"0.0": {
+							"post": [0, 0, 0],
+							"lerp_mode": "catmullrom"
+						},
+						"0.12": {
+							"post": [17.5, 0, 0],
+							"lerp_mode": "catmullrom"
+						},
+						"0.32": {
+							"post": [17.5, 0, 0],
+							"lerp_mode": "catmullrom"
+						},
+						"0.44": {
+							"post": [0, 0, 0],
+							"lerp_mode": "catmullrom"
+						}
+					}
+				},
+				"tongue": {
+					"rotation": [-12.5, 0, 0],
+					"scale": {
+						"0.0": [1, 1, 1],
+						"0.12": [1, 1, 3],
+						"0.24": [1, 1, 3],
+						"0.36": [1, 1, 0.9]
+					}
+				}
+			}
+		}
+	}
+}
