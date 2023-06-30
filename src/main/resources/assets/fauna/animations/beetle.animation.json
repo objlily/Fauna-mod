@@ -1,0 +1,60 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.beetle.walk": {
+			"loop": true,
+			"bones": {
+				"body": {
+					"rotation": [0, 0, "2*math.sin(query.anim_time*90*8)"],
+					"position": [0, "-0.1+0.1*math.sin(query.anim_time*90*16)", 0]
+				},
+				"leg_left_1": {
+					"rotation": ["12*-math.sin(query.anim_time*90*8)", 0, "-12+12*-math.cos(query.anim_time*90*8)"]
+				},
+				"leg_left_2": {
+					"rotation": ["12*math.sin(query.anim_time*90*8)", 0, "-12+12*math.cos(query.anim_time*90*8)"]
+				},
+				"leg_left_3": {
+					"rotation": ["12*-math.sin(query.anim_time*90*8)", 0, "-12+12*-math.cos(query.anim_time*90*8)"]
+				},
+				"leg_right_1": {
+					"rotation": ["12*math.sin(query.anim_time*90*8)", 0, "12+12*math.cos(query.anim_time*90*8)"]
+				},
+				"leg_right_2": {
+					"rotation": ["12*-math.sin(query.anim_time*90*8)", 0, "12+12*-math.cos(query.anim_time*90*8)"]
+				},
+				"leg_right_3": {
+					"rotation": ["12*math.sin(query.anim_time*90*8)", 0, "12+12*math.cos(query.anim_time*90*8)"]
+				}
+			}
+		},
+		"animation.beetle.fly": {
+			"loop": true,
+			"bones": {
+				"wing_Left": {
+					"rotation": [34.92095, 25, 0]
+				},
+				"wing_left_2": {
+					"rotation": ["10+10*math.sin(query.anim_time*90*100)", 20, 0]
+				},
+				"wing_Right": {
+					"rotation": [37.34246, -25, 0]
+				},
+				"wing_right_2": {
+					"rotation": ["10+10*math.sin(query.anim_time*90*100)", -20, 0]
+				},
+				"body": {
+					"rotation": [0, 0, 0]
+				},
+				"beetle": {
+					"rotation": [12.5, "2*math.sin(query.anim_time*90*1)", 0],
+					"position": [0, "2*math.cos(query.anim_time*90*1)", 0]
+				}
+			}
+		},
+		"animation.beetle.idle": {
+			"loop": true
+		}
+	},
+	"geckolib_format_version": 2
+}
