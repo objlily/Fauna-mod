@@ -43,7 +43,6 @@ public class BeetleRenderer extends GeoEntityRenderer<BeetleEntity> {
     public RenderLayer getRenderType(BeetleEntity animatable, float partialTicks, MatrixStack stack,
                                      VertexConsumerProvider renderTypeBuffer, VertexConsumer vertexBuilder,
                                      int packedLightIn, Identifier textureLocation) {
-        return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder,
-                packedLightIn, textureLocation);
+        return RenderLayer.getEntityCutoutNoCull(textureLocation);
     }
 }

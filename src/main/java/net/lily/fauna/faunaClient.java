@@ -3,9 +3,8 @@ package net.lily.fauna;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.lily.fauna.entity.ModEntities;
-import net.lily.fauna.entity.client.BeetleRenderer;
-import net.lily.fauna.entity.client.ChameleonRenderer;
-import net.lily.fauna.entity.client.NewtRenderer;
+import net.lily.fauna.entity.client.*;
+import net.minecraft.entity.EntityType;
 
 public class faunaClient implements ClientModInitializer {
     @Override
@@ -14,5 +13,8 @@ public class faunaClient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntities.NEWT, NewtRenderer::new);
         EntityRendererRegistry.register(ModEntities.CHAMELEON, ChameleonRenderer::new);
         EntityRendererRegistry.register(ModEntities.BEETLE, BeetleRenderer::new);
+        EntityRendererRegistry.register(ModEntities.RACCOON, RaccoonRenderer::new);
+        EntityRendererRegistry.register(ModEntities.CAPYBARA, CapybaraRenderer::new);
+
     }
 }

@@ -8,10 +8,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.control.FlightMoveControl;
 import net.minecraft.entity.ai.control.YawAdjustingLookControl;
-import net.minecraft.entity.ai.goal.EscapeDangerGoal;
-import net.minecraft.entity.ai.goal.SwimAroundGoal;
-import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
-import net.minecraft.entity.ai.goal.WanderAroundGoal;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.pathing.PathNodeType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -38,18 +35,15 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 public class BeetleEntity extends PassiveEntity implements IAnimatable {
 
     public EntityGroup getGroup() {
-        return EntityGroup.AQUATIC;
+        return EntityGroup.DEFAULT;
     }
 
-    public boolean isInAir() {
-        return !this.onGround;
-    }
     private final AnimationFactory factory;
 
     public BeetleEntity(EntityType<? extends PassiveEntity> entityType, World world) {
         super(entityType, world);
         this.factory = new AnimationFactory(this);
-        this.moveControl = new FlightMoveControl(this, 20, true);
+        this.moveControl = new FlightMoveControl(this, 20, false);
     }
 
     @Nullable
@@ -89,8 +83,10 @@ public class BeetleEntity extends PassiveEntity implements IAnimatable {
 
     @Override
     protected void initGoals() {
-        this.goalSelector.add(0, new WanderAroundFarGoal(this, 1.0));
+        this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(1, new EscapeDangerGoal(this, 1.25));
+        this.goalSelector.add(2, new LookAroundGoal(this));
+        this.goalSelector.add(3, new WanderAroundFarGoal(this, 1.0));
     }
     @Override
     protected void initDataTracker() {
