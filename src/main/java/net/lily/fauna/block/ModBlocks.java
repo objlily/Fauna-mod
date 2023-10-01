@@ -3,10 +3,7 @@ package net.lily.fauna.block;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.lily.fauna.fauna;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.Material;
-import net.minecraft.block.PillarBlock;
+import net.minecraft.block.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Identifier;
@@ -21,7 +18,7 @@ public class ModBlocks {
             new Block(FabricBlockSettings.copy(Blocks.OAK_PLANKS)), ItemGroup.MISC);
 
     public static final Block ORANGE_LEAVES = registerBlock("orange_leaves",
-            new Block(FabricBlockSettings.copy(Blocks.OAK_LEAVES).nonOpaque()), ItemGroup.MISC);
+            new LeavesBlock(FabricBlockSettings.copy(Blocks.OAK_LEAVES).nonOpaque()), ItemGroup.MISC);
 
     public static final Block ORANGE_LOG = (Block) registerBlock("orange_log",
             new PillarBlock(FabricBlockSettings.copy(Blocks.OAK_LOG)), ItemGroup.MISC);
@@ -33,7 +30,7 @@ public class ModBlocks {
             new PillarBlock(FabricBlockSettings.copy(Blocks.STRIPPED_OAK_LOG)), ItemGroup.MISC);
 
     public static final Block STRIPPED_ORANGE_WOOD = registerBlock("stripped_orange_wood",
-            new Block(FabricBlockSettings.copy(Blocks.STRIPPED_OAK_WOOD)), ItemGroup.MISC);
+            new PillarBlock(FabricBlockSettings.copy(Blocks.STRIPPED_OAK_WOOD)), ItemGroup.MISC);
 
     private static Block registerBlock(String name, Block block, ItemGroup tab) {
         registerBlockItem(name, block, tab);

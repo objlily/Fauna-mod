@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column_horizontal",
   "textures": {
-    "end": "fauna:block/stripped_orange_log_top",
-    "side": "fauna:block/stripped_orange_log"
+    "end": "fauna:block/orange_stripped_log_top",
+    "side": "fauna:block/orange_stripped_log"
   }
 }

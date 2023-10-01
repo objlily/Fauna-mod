@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "fauna:block/orange_wood" }
+    "axis=x": { "model": "fauna:block/orange_wood", "x": 90, "y": 90 },
+    "axis=y": { "model": "fauna:block/orange_wood" },
+    "axis=z": { "model": "fauna:block/orange_wood", "x": 90 }
   }
 }
