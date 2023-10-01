@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "fauna:orange_log",
+    "fauna:orange_wood",
+    "fauna:stripped_orange_log",
+    "fauna:stripped_orange_wood"
+  ]
+}

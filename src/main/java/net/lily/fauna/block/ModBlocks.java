@@ -6,6 +6,7 @@ import net.lily.fauna.fauna;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
+import net.minecraft.block.PillarBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Identifier;
@@ -20,16 +21,16 @@ public class ModBlocks {
             new Block(FabricBlockSettings.copy(Blocks.OAK_PLANKS)), ItemGroup.MISC);
 
     public static final Block ORANGE_LEAVES = registerBlock("orange_leaves",
-            new Block(FabricBlockSettings.copy(Blocks.OAK_LEAVES)), ItemGroup.MISC);
+            new Block(FabricBlockSettings.copy(Blocks.OAK_LEAVES).nonOpaque()), ItemGroup.MISC);
 
-    public static final Block ORANGE_LOG = registerBlock("orange_log",
-            new Block(FabricBlockSettings.copy(Blocks.OAK_LOG)), ItemGroup.MISC);
+    public static final Block ORANGE_LOG = (Block) registerBlock("orange_log",
+            new PillarBlock(FabricBlockSettings.copy(Blocks.OAK_LOG)), ItemGroup.MISC);
 
     public static final Block ORANGE_WOOD = registerBlock("orange_wood",
-            new Block(FabricBlockSettings.copy(Blocks.OAK_WOOD)), ItemGroup.MISC);
+            new PillarBlock(FabricBlockSettings.copy(Blocks.OAK_WOOD)), ItemGroup.MISC);
 
-    public static final Block STRIPPED_ORANGE_LOG = registerBlock("stripped_orange_log",
-            new Block(FabricBlockSettings.copy(Blocks.STRIPPED_OAK_LOG)), ItemGroup.MISC);
+    public static final Block STRIPPED_ORANGE_LOG = (Block) registerBlock("stripped_orange_log",
+            new PillarBlock(FabricBlockSettings.copy(Blocks.STRIPPED_OAK_LOG)), ItemGroup.MISC);
 
     public static final Block STRIPPED_ORANGE_WOOD = registerBlock("stripped_orange_wood",
             new Block(FabricBlockSettings.copy(Blocks.STRIPPED_OAK_WOOD)), ItemGroup.MISC);

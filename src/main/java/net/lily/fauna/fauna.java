@@ -6,6 +6,7 @@ import net.lily.fauna.block.ModBlocks;
 import net.lily.fauna.entity.ModEntities;
 import net.lily.fauna.entity.custom.*;
 import net.lily.fauna.item.ModItems;
+import net.lily.fauna.util.ModRegistries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.bernie.geckolib3.GeckoLib;
@@ -19,6 +20,8 @@ public class fauna implements ModInitializer {
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
 		GeckoLib.initialize();
+		ModRegistries.registerModStuffs();
+
 
 		FabricDefaultAttributeRegistry.register(ModEntities.NEWT, NewtEntity.setAttributes());
 		FabricDefaultAttributeRegistry.register(ModEntities.CHAMELEON, ChameleonEntity.setAttributes());
