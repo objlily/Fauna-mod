@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/cube_column",
   "textures": {
-    "all": "fauna:block/stripped_orange_wood"
+    "end": "fauna:block/stripped_orange_wood",
+    "side": "fauna:block/stripped_orange_wood"
   }
 }
