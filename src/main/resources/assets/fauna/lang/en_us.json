@@ -1,10 +1,11 @@
 {
   "item.fauna.newt_spawn_egg": "Newt Spawn Egg",
   "item.fauna.chameleon_spawn_egg": "Chameleon Spawn Egg",
-  "item.fauna.beetle_spawn_egg": "Beetle Spawn Egg",
+  "item.fauna.crab_spawn_egg": "Crab Spawn Egg",
   "item.fauna.raccoon_spawn_egg": "Raccoon Spawn Egg",
   "item.fauna.capybara_spawn_egg": "Capybara Spawn Egg",
   "item.fauna.orange": "Orange",
+  "item.fauna.crab_claw": "Crab Claw",
   "block.fauna.orange_planks": "Orange Planks",
   "block.fauna.orange_leaves": "Orange Leaves",
   "block.fauna.stripped_orange_log": "Stripped Orange Log",

@@ -12,10 +12,9 @@ public class faunaClient implements ClientModInitializer {
 
         EntityRendererRegistry.register(ModEntities.NEWT, NewtRenderer::new);
         EntityRendererRegistry.register(ModEntities.CHAMELEON, ChameleonRenderer::new);
-        EntityRendererRegistry.register(ModEntities.BEETLE, BeetleRenderer::new);
         EntityRendererRegistry.register(ModEntities.RACCOON, RaccoonRenderer::new);
         EntityRendererRegistry.register(ModEntities.CAPYBARA, CapybaraRenderer::new);
-
+        EntityRendererRegistry.register(ModEntities.CRAB, CrabRenderer::new);
 
     }
 }

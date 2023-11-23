@@ -6,16 +6,13 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.control.AquaticMoveControl;
 import net.minecraft.entity.ai.control.YawAdjustingLookControl;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.ai.pathing.PathNodeType;
-import net.minecraft.entity.ai.pathing.SwimNavigation;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.passive.AxolotlEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -25,28 +22,24 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.Map;
 
-public class NewtEntity extends PassiveEntity implements IAnimatable {
-
-
-    private final Map<String, Vec3f> modelAngles = Maps.newHashMap();
+public class NewtEntity extends PassiveEntity implements GeoEntity {
+    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
 
     public boolean canBreatheInWater() {
@@ -63,12 +56,10 @@ public class NewtEntity extends PassiveEntity implements IAnimatable {
     }
 
 
-    private final AnimationFactory factory;
 
     public NewtEntity(EntityType<? extends PassiveEntity> entityType, World world) {
         super(entityType, world);
-        this.setPathfindingPenalty(PathNodeType.WATER, 0.0F);
-        this.factory = new AnimationFactory(this);
+        this.setPathfindingPenalty(PathNodeType.WATER, -1.0F);
         this.moveControl = new AquaticMoveControl(this, 85, 10, 0.02F, 0.1F, true);
         this.lookControl = new YawAdjustingLookControl(this, 10);
     }
@@ -99,33 +90,26 @@ public class NewtEntity extends PassiveEntity implements IAnimatable {
     }
 
 
-    public Map<String, Vec3f> getModelAngles() {
-        return this.modelAngles;
-    }
 
     public float getPathfindingFavor(BlockPos pos, WorldView world) {
         return 0.0F;
     }
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.newt.walk", true));
+    private <T extends GeoAnimatable > PlayState predicate(AnimationState< T > tAnimationState) {
+        if (tAnimationState.isMoving()) {
+            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.newt.walk", Animation.LoopType.LOOP));
         } else if (isSubmergedInWater()){
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.newt.swim", true));
+            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.newt.swim", Animation.LoopType.LOOP));
         } else{
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.newt.idle", true));
+            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.newt.idle", Animation.LoopType.LOOP));
         }
         return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController<>(this, "controller", 4, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 4, this::predicate));
     }
 
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
 
 
     @Override
@@ -199,6 +183,11 @@ public class NewtEntity extends PassiveEntity implements IAnimatable {
 
     protected SoundEvent getSwimSound() {
         return SoundEvents.ENTITY_AXOLOTL_SWIM;
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 
 }

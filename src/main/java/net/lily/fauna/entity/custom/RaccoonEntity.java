@@ -1,10 +1,8 @@
 package net.lily.fauna.entity.custom;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.brain.task.TemptTask;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -23,15 +21,16 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 
-public class RaccoonEntity extends PassiveEntity implements IAnimatable {
+
+public class RaccoonEntity extends PassiveEntity implements GeoEntity {
+    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
 
     private static final TrackedData<Boolean> IS_TEMPTED = DataTracker.registerData(RaccoonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -45,11 +44,9 @@ public class RaccoonEntity extends PassiveEntity implements IAnimatable {
     }
 
 
-    private final AnimationFactory factory;
 
     public RaccoonEntity(EntityType<? extends PassiveEntity> entityType, World world) {
         super(entityType, world);
-        this.factory = new AnimationFactory(this);
         this.dataTracker.startTracking(IS_TEMPTED, false);
     }
 
@@ -66,39 +63,35 @@ public class RaccoonEntity extends PassiveEntity implements IAnimatable {
     }
 
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 
-        if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.raccoon.walk", true));
-        } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.raccoon.idle", true));
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 4, this::predicate));
+        controllerRegistrar.add(new AnimationController<>(this, "tempted_controller", 12, this::predicate2));
+    }
+
+    private <T extends GeoAnimatable> PlayState predicate(AnimationState<T> tAnimationState) {
+        if(tAnimationState.isMoving()) {
+            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.raccoon.walk", Animation.LoopType.LOOP));
         }
-
+        else {
+            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.raccoon.idle", Animation.LoopType.LOOP));
+        }
         return PlayState.CONTINUE;
     }
 
-    private <E extends IAnimatable> PlayState predicate2(AnimationEvent<E> event) {
 
+    private <T extends GeoAnimatable> PlayState predicate2(AnimationState<T> tAnimationState) {
         if (dataTracker.get(IS_TEMPTED)) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.raccoon.lookingup", true));
-        } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.raccoon.idle2", true));
+            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.raccoon.lookingup", Animation.LoopType.LOOP));
+        }else {
+            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.raccoon.idle2", Animation.LoopType.LOOP));
         }
         return PlayState.CONTINUE;
     }
 
 
 
-    @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController<>(this, "controller", 4, this::predicate));
-        animationData.addAnimationController(new AnimationController<>(this, "tempted_controller", 12, this::predicate2));
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
 
 
 
@@ -122,10 +115,10 @@ public class RaccoonEntity extends PassiveEntity implements IAnimatable {
 
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(1, new EscapeDangerGoal(this, 1.25));
-        this.goalSelector.add(2, new LookAroundGoal(this));
-        this.goalSelector.add(3, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
-        this.goalSelector.add(4, new WanderAroundFarGoal(this, 1.0));
-        this.goalSelector.add(5, temptGoal);
+        this.goalSelector.add(2, temptGoal);
+        this.goalSelector.add(3, new WanderAroundFarGoal(this, 1.0));
+        this.goalSelector.add(4, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.add(5, new LookAroundGoal(this));
     }
 
 
@@ -143,5 +136,10 @@ public class RaccoonEntity extends PassiveEntity implements IAnimatable {
 
     protected void playStepSound(BlockPos pos, BlockState state) {
         this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.15F, 1.0F);
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 }

@@ -8,7 +8,7 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 
 public class CapybaraRenderer extends GeoEntityRenderer<CapybaraEntity> {
@@ -21,21 +21,12 @@ public class CapybaraRenderer extends GeoEntityRenderer<CapybaraEntity> {
 
 
     @Override
-    public Identifier getTextureResource(CapybaraEntity object) {
-        return new Identifier(fauna.MOD_ID, "textures/entity/capybara.png");
-    }
-
-    @Override
-    public RenderLayer getRenderType(CapybaraEntity animatable, float partialTicks, MatrixStack stack,
-                                     VertexConsumerProvider renderTypeBuffer, VertexConsumer vertexBuilder,
-                                     int packedLightIn, Identifier textureLocation) {
-        if(animatable.isBaby()) {
-            stack.scale(0.5f, 0.5f, 0.5f);
-        } else {
-            stack.scale(1f, 1f, 1f);
+    public void render(CapybaraEntity entity, float entityYaw, float partialTick, MatrixStack poseStack,
+                       VertexConsumerProvider bufferSource, int packedLight) {
+        if(entity.isBaby()) {
+            poseStack.scale(0.4f, 0.4f, 0.4f);
         }
 
-        return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder,
-                packedLightIn, textureLocation);
+        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
 }

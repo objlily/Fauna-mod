@@ -14,28 +14,38 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 
-public class ChameleonEntity extends PassiveEntity implements IAnimatable {
+public class ChameleonEntity extends PassiveEntity implements GeoEntity {
+    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
 
+
+    private <T extends GeoAnimatable> boolean hasEntityMoved() {
+        Entity entity = this;
+        double prevX = entity.prevX;
+        double prevY = entity.prevY;
+        double prevZ = entity.prevZ;
+        double currentX = entity.getX();
+        double currentY = entity.getY();
+        double currentZ = entity.getZ();
+
+        return prevX != currentX || prevY != currentY || prevZ != currentZ;
+    }
 
     public EntityGroup getGroup() {
         return EntityGroup.DEFAULT;
     }
 
 
-    private final AnimationFactory factory;
 
     public ChameleonEntity(EntityType<? extends PassiveEntity> entityType, World world) {
         super(entityType, world);
-        this.factory = new AnimationFactory(this);
     }
 
     @Nullable
@@ -50,43 +60,33 @@ public class ChameleonEntity extends PassiveEntity implements IAnimatable {
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.05);
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (hasEntityMoved(event)) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.chameleon.walk", true));
+    private <T extends GeoAnimatable> PlayState predicate(AnimationState<T> tAnimationState) {
+        if (hasEntityMoved()) {
+            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.chameleon.walk", Animation.LoopType.LOOP));
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.chameleon.idle", true));
-        }
+            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.chameleon.idle", Animation.LoopType.LOOP));        }
         return PlayState.CONTINUE;
     }
 
-    private <E extends IAnimatable> boolean hasEntityMoved(AnimationEvent<E> event) {
-        Entity entity = this;
-        double prevX = entity.prevX;
-        double prevY = entity.prevY;
-        double prevZ = entity.prevZ;
-        double currentX = entity.getX();
-        double currentY = entity.getY();
-        double currentZ = entity.getZ();
-
-        return prevX != currentX || prevY != currentY || prevZ != currentZ;
-    }
 
 
 
     @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController<>(this, "controller", 4, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 12, this::predicate));
     }
 
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
+
 
 
     @Override
     protected void initGoals() {
         this.goalSelector.add(1, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(0, new WanderAroundFarGoal(this, 1.0));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 }

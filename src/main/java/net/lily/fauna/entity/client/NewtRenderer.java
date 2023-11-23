@@ -1,13 +1,12 @@
 package net.lily.fauna.entity.client;
 
+import net.lily.fauna.entity.custom.CrabEntity;
 import net.lily.fauna.entity.custom.NewtEntity;
 import net.lily.fauna.entity.variant.NewtVariant;
 import net.lily.fauna.fauna;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.util.Identifier;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 import com.google.common.collect.Maps;
 import net.minecraft.util.Util;
 import net.minecraft.client.render.RenderLayer;
@@ -15,6 +14,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 
 import net.minecraft.client.util.math.MatrixStack;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 import java.util.Map;
 
@@ -37,22 +37,12 @@ public class NewtRenderer extends GeoEntityRenderer<NewtEntity> {
         this.shadowRadius = 0.4f;
     }
 
-    @Override
-    public Identifier getTextureResource(NewtEntity instance) {
-        return LOCATION_BY_VARIANT.get(instance.getVariant());
-    }
 
-    @Override
-    public RenderLayer getRenderType(NewtEntity animatable, float partialTicks, MatrixStack stack,
+
+
+    public RenderLayer getRenderType(CrabEntity entity, float partialTicks, MatrixStack stack,
                                      VertexConsumerProvider renderTypeBuffer, VertexConsumer vertexBuilder,
                                      int packedLightIn, Identifier textureLocation) {
-        if(animatable.isBaby()) {
-            stack.scale(0.5f, 0.5f, 0.5f);
-        } else {
-            stack.scale(1f, 1f, 1f);
-        }
-
-        return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder,
-                packedLightIn, textureLocation);
+        return RenderLayer.getEntityCutoutNoCull(textureLocation);
     }
 }

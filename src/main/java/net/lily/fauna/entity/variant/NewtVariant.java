@@ -7,7 +7,6 @@ public enum NewtVariant {
     ALPINE(0),
     ORANGE(1),
     SPOTTED(2),
-
     ROUGH(3);
 
     private static final NewtVariant[] BY_ID = Arrays.stream(values()).sorted(Comparator.

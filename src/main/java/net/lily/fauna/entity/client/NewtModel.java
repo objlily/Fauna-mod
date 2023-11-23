@@ -1,15 +1,18 @@
 package net.lily.fauna.entity.client;
 
+import net.lily.fauna.entity.custom.CapybaraEntity;
 import net.lily.fauna.entity.custom.NewtEntity;
 import net.lily.fauna.fauna;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.processor.IBone;
+import net.minecraft.util.math.MathHelper;
+import software.bernie.geckolib.constant.DataTickets;
+import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.model.data.EntityModelData;
+import software.bernie.geckolib.model.GeoModel;
 
-import software.bernie.geckolib3.model.provider.data.EntityModelData;
-public class NewtModel extends AnimatedGeoModel<NewtEntity> {
+public class NewtModel extends GeoModel<NewtEntity> {
     @Override
     public Identifier getModelResource(NewtEntity instance) {
         return new Identifier(fauna.MOD_ID, "geo/newt.geo.json");
@@ -24,16 +27,16 @@ public class NewtModel extends AnimatedGeoModel<NewtEntity> {
     public Identifier getAnimationResource(NewtEntity animatable) {
         return new Identifier(fauna.MOD_ID, "animations/newt.animation.json");
     }
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
-    public void setLivingAnimations(NewtEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
-        super.setLivingAnimations(entity, uniqueID, customPredicate);
-        IBone head = this.getAnimationProcessor().getBone("head");
 
-        EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
+    @Override
+    public void setCustomAnimations(NewtEntity animatable, long instanceId, AnimationState<NewtEntity> animationState) {
+        CoreGeoBone head = getAnimationProcessor().getBone("head");
+
+
         if (head != null) {
-            head.setRotationX(extraData.headPitch * ((float) Math.PI / 180f));
-            head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180f));
+            EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
+            head.setRotX(entityData.headPitch() * MathHelper.RADIANS_PER_DEGREE);
+            head.setRotY(entityData.netHeadYaw() * MathHelper.RADIANS_PER_DEGREE);
         }
     }
 }

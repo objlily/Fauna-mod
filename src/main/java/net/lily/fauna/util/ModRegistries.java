@@ -3,6 +3,7 @@ package net.lily.fauna.util;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
 import net.lily.fauna.block.ModBlocks;
+import net.minecraft.registry.tag.ItemTags;
 
 public class ModRegistries {
     public static void registerModStuffs() {
